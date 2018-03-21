@@ -192,12 +192,16 @@ function drawGraphic() {
 		  .attr("r", 5)
 		  .attr("cx", function(d) { return d.data.x; })
 		  .attr("cy", function(d) { return d.data.y; })
+		  .attr("class", function(d) { return "cell cell" + d.data.id.split(" ").join("");})
 		  .attr("fill",function(d){return  dvc.essential.colour_palette[groups.indexOf(d.data.id)]});
 	
 	  cell.append("path")
 		  .attr("d", function(d) { return "M" + d.join("L") + "Z"; })
 		  .on("mouseover", function(d) {
 			  d3.select("#info").html("<span id='label'>" + d.data.unique + ":</span> " + formatValue(d.data.value));
+		  })
+		  .on("mouseout", function(d) {
+			  d3.select("#info").html("");
 		  });
 		  
 	//add xaxislabel
@@ -250,7 +254,17 @@ function  createLegend(groups) {
 			.enter()
 			.append('li')
 			//.style("background-color", function(d , i) { return dvc.essential.colour_palette[i]; })
-			.attr('class', function(d, i) { return 'key-item key-' + i + ' b '+ d.replace(' ', '-').toLowerCase(); });
+			.attr('class', function(d, i) { return 'key-item key-' + i + ' b '+ d.replace(' ', '-').toLowerCase(); })
+			.on("mouseover",function(d, i){
+				d3.selectAll(".key-item").style("opacity",0.2);
+				d3.selectAll(".key-" + i).style("opacity",1);
+				d3.selectAll(".cell").style("opacity",0.2);
+				d3.selectAll(".cell" + d.split(" ").join("")).style("opacity",1);
+			})
+			.on("mouseout",function(d, i){
+				d3.selectAll(".key-item").style("opacity",1);
+				d3.selectAll(".cell").style("opacity",1);
+			})
 	
 		legend.append('b').attr("class", "legendBlocks")
 			.style("background-color", function(d , i) { return dvc.essential.colour_palette[i]; });
