@@ -156,7 +156,7 @@ function drawGraphic() {
 
 
 	  var simulation = d3.forceSimulation(graphic_data)
-		  .force("x", d3.forceX(function(d) { return x(d.value); }).strength(2))
+		  .force("x", d3.forceX(function(d) { return x(d.value); }).strength(1))
 		  .force("y", d3.forceY(height / 2))
 		  .force("collide", d3.forceCollide(6))
 		  .stop();
